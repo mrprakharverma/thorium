@@ -25,6 +25,8 @@ res.send(players);
 
 });
 
+//---------------------------------2---------------------------------//
+
 router.post('/players/:playerName/bookings/:bookingId', function(req, res){
 
     let name = req.params.playerName
