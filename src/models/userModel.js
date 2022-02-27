@@ -1,31 +1,13 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema( {
-    firstName: String,
-    lastName: String,
-    mobile: {
+const bookSchema = new mongoose.Schema( {
+    bookName: String,
+    authorName: String,
+    category: {
         type: String,
-        unique: true,
-        required: true
+        enum: ["Poetry", "Novel", "Prayer", "Anthology", "Alternate history", "Crime", "Comic Book", "Journal", "Horror", "Mystery"]
     },
-    emailId: String,
-    gender: {
-        type: String,
-        enum: ["male", "female", "LGBTQ"] //"falana" will give an error
-    },
-    age: Number,
-    // isIndian: Boolean,
-    // parentsInfo: {
-    //     motherName: String,
-    //     fatherName: String,
-    //     siblingName: String
-    // },
-    // cars: [ String  ]
-}, { timestamps: true });
+    year: Number,
+}, { timestamps: true});
 
-module.exports = mongoose.model('User', userSchema) //users
-
-
-
-// String, Number
-// Boolean, Object/json, array
+module.exports = mongoose.model("Book", bookSchema) //users
