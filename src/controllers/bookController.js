@@ -1,24 +1,59 @@
 const { count } = require("console")
-const authorModel = require("../models/authorModel")
-const bookModel= require("../models/bookModel")
+const res = require("express/lib/response")
+const newAuthor = require("../models/newAuthor")
+const newBook = require("../models/newBook")
+const newPublisher = require("../models/newPublisher")
 
-const createBook= async function (req, res) {
+const createAuthor= async function (req, res) {
+    let author = req.body
+    let authorCreated = await newAuthor.create(author)
+    res.send({data: authorCreated})                                          
+}
+
+const createPublisher= async function (req, res) {
+    let Publisher = req.body
+    let PublisherCreated = await newPublisher.create(Publisher)
+    res.send({data: PublisherCreated})
+}
+
+const createBook1 = async function (req, res) {
     let book = req.body
-    let bookCreated = await bookModel.create(book)
+    let bookCreated = await newBook.create(book)
     res.send({data: bookCreated})
 }
 
-const getBooksData= async function (req, res) {
-    let books = await bookModel.find()
-    res.send({data: books})
+const createBook = async function(req,res) {
+    let book = req.body
+    if (book.Author) {
+        if (book.Publisher) {
+            Publisher_id = book.Publisher
+            Authorid_id = book.Author
+            const define1 = await newAuthor.find({_id:Author_id})
+            const define2 = await newPublisher.find({_id:Publisher_id})
+            if (define1.length == 0) {
+                res.send("This Author is not present.")
+            }
+            if (define2.length == 0) {
+                res.send("This Publisher is not present.")
+            }
+            let bookCreated = await newBook.create(book)
+            res.send({data: bookCreated})
+        }
+            res.send("Details Required")
+    }
+            res.send("Details Required")
+}       
+
+const getBooks = async function (req, res) {
+    let Book = await newBook.find().populate('Author_id')
+    res.send({data: Book})
 }
 
-const getBooksWithAuthorDetails = async function (req, res) {
-    let specificBook = await bookModel.find().populate('author_id')
-    res.send({data: specificBook})
-
-}
-
+module.exports.createBook1= createBook1
+module.exports.createPublisher= createPublisher
+module.exports.createAuthor=createAuthor
 module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
-module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
+module.exports.getBooks = getBooks
+
+
+
